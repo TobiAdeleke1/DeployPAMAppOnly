@@ -5,7 +5,7 @@ terraform {
     organization = "pam_terra"
 
     workspaces {
-      name = "pam-space"
+      name = "pam-app-space"
     }
   }
 

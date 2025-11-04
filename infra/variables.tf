@@ -44,21 +44,21 @@ variable "compose_env" {
   description = "Extra env vars for .env on the droplet."
 }
 
-variable "docker_db_name" { type =  string }
+variable "docker_db_name" { type = string }
 variable "docker_db_user" { type = string }
 
-variable "docker_db_password" { 
-  type      =  string  
+variable "docker_db_password" {
+  type      = string
   sensitive = true
 
 }
 
 variable "docker_db_host" {
-  type = string
+  type    = string
   default = "db"
 }
 
 variable "docker_db_port" {
-  type = string
+  type    = string
   default = "5432"
 }

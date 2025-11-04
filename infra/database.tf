@@ -7,9 +7,9 @@ locals {
     DB_HOST     = var.docker_db_host
     DB_PORT     = var.docker_db_port
   }
-  
+
   final_env = merge(var.compose_env, local.db_env)
-  env_file = join("\n", [for k, v in local.final_env : "${k}=${v}"])
+  env_file  = join("\n", [for k, v in local.final_env : "${k}=${v}"])
 }
 
 # Bundle ./app and upload -> build/run on droplet

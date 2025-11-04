@@ -3,7 +3,7 @@ output "droplet_ip" {
 }
 
 output "database_url" {
-  value     = {
+  value = {
     type = "docker"
     host = var.docker_db_host
     port = var.docker_db_port

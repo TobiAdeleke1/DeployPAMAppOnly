@@ -47,12 +47,9 @@ resource "null_resource" "deploy_app" {
     destination = "/opt/app/app.tar.gz"
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "set -euo pipefail",
-      "cat > /opt/app/.env <<'EOF'\n${local.env_file}\nEOF",
-      "chmod 600 /opt/app/.env"
-    ]
+  provisioner "file" {
+    content     = local.env_file
+    destination = "/opt/app/.env"
   }
 
   provisioner "remote-exec" {

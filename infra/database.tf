@@ -37,7 +37,6 @@ resource "null_resource" "deploy_app" {
   provisioner "remote-exec" {
     inline = [
       "set -euo pipefail",
-      "mkdir -p /opt/app",
       "i=0; until command -v docker >/dev/null 2>&1; do i=$((i+1)); [ $i -gt 60 ] && { echo 'docker not ready'; exit 1; }; sleep 2; done",
       "i=0; until docker compose version >/dev/null 2>&1; do i=$((i+1)); [ $i -gt 60 ] && { echo 'docker compose not ready'; exit 1; }; sleep 2; done"
     ]

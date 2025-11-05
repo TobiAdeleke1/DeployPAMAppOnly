@@ -22,7 +22,10 @@ data "archive_file" "app_tar" {
 resource "null_resource" "deploy_app" {
   depends_on = [digitalocean_droplet.web]
 
-  triggers = { app_md5 = data.archive_file.app_tar.output_md5 }
+  triggers = {
+    app_md5 = data.archive_file.app_tar.output_md5
+    env_md5 = md5(local.env_file)
+  }
 
   connection {
     type        = "ssh"
@@ -31,18 +34,31 @@ resource "null_resource" "deploy_app" {
     private_key = var.ssh_private_key
   }
 
+  provisioner "remote-exec" {
+    inline = [
+      "set -euo pipefail",
+      "mkdir -p /opt/app",
+      "i=0; until command -v docker >/dev/null 2>&1; do i=$((i+1)); [ $i -gt 60 ] && { echo 'docker not ready'; exit 1; }; sleep 2; done",
+      "i=0; until docker compose version >/dev/null 2>&1; do i=$((i+1)); [ $i -gt 60 ] && { echo 'docker compose not ready'; exit 1; }; sleep 2; done"
+    ]
+  }
+
   provisioner "file" {
     source      = data.archive_file.app_tar.output_path
     destination = "/opt/app/app.tar.gz"
   }
 
-  provisioner "file" {
-    content     = local.env_file
-    destination = "/opt/app/.env"
+  provisioner "remote-exec" {
+    inline = [
+      "set -euo pipefail",
+      "cat > /opt/app/.env <<'EOF'\n${local.env_file}\nEOF",
+      "chmod 600 /opt/app/.env"
+    ]
   }
 
   provisioner "remote-exec" {
     inline = [
+      "set -euo pipefail",
       "cd  /opt/app",
       "tar -xzf app.tar.gz",
       "if [ -d app ]; then mv app/* .; rmdir app; fi",

@@ -81,7 +81,7 @@ jobs:
         run: terraform plan -out=tfplan
       
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main'
         env:
           TF_VAR_project_name: ${{ vars.PROJECT_NAME || 'pam_app'}}
           TF_VAR_env: ${{ vars.ENV || 'prod'}}

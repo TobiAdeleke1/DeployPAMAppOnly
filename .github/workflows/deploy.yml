@@ -77,7 +77,7 @@ jobs:
           TF_VAR_compose_env: >-
             {
               "DJANGO_SECRET_KEY": "${{ secrets.DJANGO_SECRET_KEY}}",
-              "DJANGO_ALLOWED_HOSTS": "${{ vars.DJANGO_ALLOWED_HOSTS || '167.99.93.189 localhost 127.0.0.1'}}",
+              "DJANGO_ALLOWED_HOSTS": "${{ vars.DJANGO_ALLOWED_HOSTS || 'amorfy.dev localhost 127.0.0.1'}}",
               "DEBUG": "False"
             }
         run: terraform plan -out=tfplan

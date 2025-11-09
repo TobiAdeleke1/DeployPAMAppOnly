@@ -39,6 +39,14 @@ resource "digitalocean_firewall" "web" {
     source_addresses = ["0.0.0.0/0", "::/0"]
   }
 
+  # HTTPS
+  inbound_rule {
+    protocol         = "tcp"
+    port_range       = "443"
+    source_addresses = ["0.0.0.0/0", "::/0"]
+  }
+
+
   # Egress allow all tcp and udp ports
   outbound_rule {
     protocol              = "tcp"

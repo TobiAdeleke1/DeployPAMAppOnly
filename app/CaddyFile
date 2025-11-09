@@ -1,9 +1,8 @@
-# Http only, remove auto_https off when DNS is added
-{
-    auto_https off
+www.amorfy.dev {
+    redir https://amorfy.dev{uri}
 }
 
-:80 {
+amorfy.dev {
     encode gzip zstd
 
     # Django API
